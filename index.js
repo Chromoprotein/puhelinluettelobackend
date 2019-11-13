@@ -22,7 +22,7 @@ app.use(morgan('tiny'))
 
 //juuren tapahtumakäsittelijä
 app.get('/', (request, response) => {
-    response.send('<h1>Hello World! :)</h1>')
+  response.send('<h1>Hello World! :)</h1>')
 })
 
 //infon tapahtumakäsittelijä
@@ -55,7 +55,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 //resurssin poisto
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error)) //virheenkäsittelyn siirtäminen middlewareen
@@ -72,11 +72,11 @@ app.post('/api/persons', (request, response, next) => {
   })
 
   person.save()
-  .then(savedPerson => savedPerson.toJSON()) //formatointi  
-  .then(savedAndFormattedPerson => {      
-    response.json(savedAndFormattedPerson)    
-  }) 
-  .catch(error => next(error)) //nimen ja numeron varmistus mongoosen sisäisellä validoinnilla
+    .then(savedPerson => savedPerson.toJSON()) //formatointi
+    .then(savedAndFormattedPerson => {
+      response.json(savedAndFormattedPerson)
+    })
+    .catch(error => next(error)) //nimen ja numeron varmistus mongoosen sisäisellä validoinnilla
 })
 
 const unknownEndpoint = (request, response) => {
@@ -90,11 +90,11 @@ app.use(unknownEndpoint)
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
-  if (error.name === 'CastError' && error.kind == 'ObjectId') { //virheellinen id-formaatti
+  if (error.name === 'CastError' && error.kind === 'ObjectId') { //virheellinen id-formaatti
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  }
   else if (error.name === 'ValidationError') { //validointivirheet
-    return response.status(400).json({ error: error.message })  
+    return response.status(400).json({ error: error.message })
   }
 
   next(error) //oletusarvoiselle virheenkäsittelijälle

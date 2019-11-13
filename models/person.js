@@ -1,17 +1,17 @@
 const mongoose = require('mongoose')
 
-const uniqueValidator = require('mongoose-unique-validator'); //estää duplikaatit
+const uniqueValidator = require('mongoose-unique-validator') //estää duplikaatit
 
 const url = process.env.MONGODB_URI
 console.log('connecting to', url)
 
 mongoose.connect(url, { useNewUrlParser: true })
-    .then(result => {    
-      console.log('connected to MongoDB')  
-    })  
-    .catch((error) => {    
-        console.log('error connecting to MongoDB:', error.message)  
-    })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
 
 //skeema määrittelee, millainen rakenne muistiinpanolla on
 //required: true - nimen ja numeron varmistus mongoosen sisäisellä validoinnilla
